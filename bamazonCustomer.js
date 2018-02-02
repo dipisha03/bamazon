@@ -19,17 +19,6 @@ connection.connect(function(err){
     displayItems();
 });
 
-// Creating a function to update the db based on customers request
-function butItem(itemID, stock, quantity) {
-    var newStock = stock - quantity;
-    connection.query('UPDATE products SET stock_quantity = ? WHERE item_id = ? AND stock_quantity = ?', [newStock, itemID, stock],
-    function(error, results){
-        if(error) throw error;
-        console.log ("Successfully Purchased!");
-        displayItems();
-    });
-};
-
 // Displaying all the items for sale from the database
 function displayItems() {
     connection.query('SELECT * FROM products', function (error, results){
