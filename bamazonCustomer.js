@@ -1,51 +1,101 @@
-// Create a Node application called `bamazonCustomer.js`. Running this application will first display all of the items available for sale. Include the ids, names, and prices of products for sale. 
 
-// Requiring mysql and inquirer packages 
+// Dependencies  
 var mysql = require('mysql');
 var inquirer = require('inquirer');
+var table = require('cli-table');
 
 // Connecting to the database 
 var connection = mysql.createConnection({
     host: 'localhost',
-    port:5000,
+    port: 3306,
     user: 'root',
     password: 'Aquajava!03',
     database: 'bamazon_db'
-
 });
 
-// Executing a connection 
-connection.connect(function(err) {
+// Checking for error in connection 
+connection.connect(function(err){
     if (err) throw err;
-    start();
-})
+    displayItems();
+});
 
-// The app should then prompt users with two messages.
- // * The first should ask them the ID of the product they would like to buy.
-   // * The second message should ask how many units of the product they would like to buy.
+// Creating a function to update the db based on customers request
+function butItem(itemID, stock, quantity) {
+    var newStock = stock - quantity;
+    connection.query('UPDATE products SET stock_quantity = ? WHERE item_id = ? AND stock_quantity = ?', [newStock, itemID, stock],
+    function(error, results){
+        if(error) throw error;
+        console.log ("Successfully Purchased!");
+        displayItems();
+    });
+};
 
-// Creating a function to prompt the user with message one [itemID]
-function start() {
-    inquirer.prompt({
-        name: 'itemID',
-        type: 'input',
-        message: 'What is the ID of the item you would like to buy? [Quit to Q]',
-        choices: ['1', '2', '3','4', '5','6','7','8','9','10']
+// Displaying all the items for sale from the database
+function displayItems() {
+    connection.query('SELECT * FROM products', function (error, results){
+        products = res;
+        if (error) throw error;
+        var table = new Table({
+            head: ['Item ID', 'Product Name', 'Department', 'Price', 'Quantity' ], 
+            colWidths: [5, 60, 30, 10, 10],
+            chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔', 'top-right': '╗',   'bottom': '═' , 'bottom-mid': '╧' ,
+            'bottom-left': '╚' , 'bottom-right': '╝',   'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
+            , 'right': '║' , 'right-mid': '╢' , 'middle': '│' }
+          });
+        products.forEach(element => {
+            table.push([
+              element.item_id, 
+              element.product_name,
+              element.department_name,
+              element.price,
+              element.stock_quantity
+            ]);
+          });
+          console.log(table.toString());
+          questions() 
+        });
+      };
+
+// Asking customers the item ID and quantity they want to buy
+function questions(results) {
+	inquirer.prompt([
+		{
+            name: "item_id",
+            type: "input",
+			message: "What is the ID of the item you want to buy?"	
+		},	
+		{
+            name: "quantity",
+			type: "input",
+			message: "How many do you want to buy?"
+		}
+
+	]).then(function(answer){
+
+        findItem(answer)
     })
-    .then(function(answer) {
-      if(answer.itemID === "itemID"){
-        postAuction();
-      }else{
-          bidAuction();
-      } 
-    })
-}
-  
+};
 
-// Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
+// Checking if the store has enough items in stock 
+function findItem(answer){
+    products.forEach(item => {
+      if (item.item_id == answer.buy_id){
+        processOrder(item, answer)
+      }
+    });
+};
 
-   // * If not, the app should log a phrase like `Insufficient quantity!`, and then prevent the order from going through.
-
-// However, if your store _does_ have enough of the product, you should fulfill the customer's order.
-   // * This means updating the SQL database to reflect the remaining quantity.
-   // * Once the update goes through, show the customer the total cost of their purchase.
+function processOrder(item, answer){
+    console.log(JSON.stringify(item)  + " item")
+    if (item.stock_quantity >= answer.amount){
+      var newQuantity = item.stock_quantity - answer.amount
+      connection.query('UPDATE products SET ? WHERE ?', [{stock_quantity: newQuantity}, {item_id: item.item_id}])
+      console.log('Total Cost = ' + item.price * answer.amount)
+    } else {
+      console.log("Insufficient Quantity!");
+    }
+  };
+   
+  module.exports = {
+    displayItems
+  }
