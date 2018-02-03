@@ -7,15 +7,15 @@ Technologies used: MySQL | Node.js
 Packages used: MySQL | Inquirer 
 
 ## Screenshots: 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![Alt text](https://raw.githubusercontent.com/dipisha03/bamazon/master/screenshots/IMG-1763.JPG "Items View")
 
 
 
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![Alt text](https://raw.githubusercontent.com/dipisha03/bamazon/master/screenshots/IMG-1773.JPG "Questions & Answers")
 
 
 
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![Alt text](https://raw.githubusercontent.com/dipisha03/bamazon/master/screenshots/IMG-1774.JPG "")
 	
