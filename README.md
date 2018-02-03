@@ -4,7 +4,7 @@ Created an Amazon-like storefront with MySQL. The CLI application takes in order
 
 Technologies used: MySQL | Node.js
 
-Packages used: MySQL | Inquirer 
+Packages used: MySQL | Inquirer | CLI-table 
 
 ## Screenshots: 
 
@@ -32,4 +32,9 @@ Packages used: MySQL | Inquirer
 ![Alt text](https://raw.githubusercontent.com/dipisha03/bamazon/master/screenshots/Screenshot4.png "mysql queries")
 
     * mysql queries used for the application 
+
+![Alt text](https://raw.githubusercontent.com/dipisha03/bamazon/master/screenshots/Screenshot5.png "mysql queries")
+
+    * mysql workbench view
+    
 
