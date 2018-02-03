@@ -28,8 +28,8 @@ Packages used: MySQL | Inquirer
 
     * Bamazon will display the message "See ya later!"
 	
-    
-![Alt text](https://raw.githubusercontent.com/dipisha03/bamazon/master/screenshots/Screenshot3.png "mysql queries")
+
+![Alt text](https://raw.githubusercontent.com/dipisha03/bamazon/master/screenshots/Screenshot4.png "mysql queries")
 
     * mysql queries used for the application 
 
